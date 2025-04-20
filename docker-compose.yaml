@@ -9,7 +9,7 @@ services:
     networks:
       - app-net
     environment:
-      GATEWAY_ENDPOINT: "http://localhost:8080/api"
+      - NEXT_PUBLIC_GATEWAY_ENDPOINT="http://localhost:8080/api"
     restart: always
 
   api-gateway:
