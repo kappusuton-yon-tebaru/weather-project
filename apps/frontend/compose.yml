@@ -1,0 +1,10 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      GATEWAY_ENDPOINT: "http://localhost:8080/api"
+    restart: always

@@ -1,0 +1,16 @@
+services:
+  api-gateway:
+    container_name: api-gateway
+    image: api-gateway:latest
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    networks:
+      - app-net
+    environment:
+      - PORT=8080
+      - DEV=FALSE
+      - GEOLOCATION_SERVICE_ENDPOINT=http://geolocation-service:8081/api
+      - WEATHER_SERVICE_ENDPOINT=http://weather-service:8082/api
+    env_file: ".env"

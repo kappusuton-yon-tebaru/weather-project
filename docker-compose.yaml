@@ -1,0 +1,59 @@
+services:
+  frontend:
+    container_name: frontend
+    image: frontend:latest
+    build:
+      context: ./apps/frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-net
+    environment:
+      GATEWAY_ENDPOINT: "http://localhost:8080/api"
+    restart: always
+
+  api-gateway:
+    container_name: api-gateway
+    image: api-gateway:latest
+    build:
+      context: ./apps/api-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - app-net
+    environment:
+      - PORT=8080
+      - DEV=FALSE
+      - GEOLOCATION_SERVICE_ENDPOINT=http://geolocation-service:8081/api
+      - WEATHER_SERVICE_ENDPOINT=http://weather-service:8082/api
+    env_file: "./apps/api-gateway/.env"
+
+  geolocation-service:
+    container_name: geolocation-service
+    image: geolocation-service:latest
+    build:
+      context: ./apps/geolocation-service
+    networks:
+      - app-net
+    environment:
+      - PORT=8081
+      - DEV=FALSE
+      - GEOAPIFY_API_ENDPOINT=https://api.geoapify.com/
+    env_file: "./apps/geolocation-service/.env"
+
+  weather-service:
+    container_name: weather-service
+    image: weather-service:latest
+    build:
+      context: ./apps/weather-service
+    networks:
+      - app-net
+    environment:
+      - PORT=8082
+      - DEV=FALSE
+      - OPENWEATHER_API_ENDPOINT=https://api.openweathermap.org/data/2.5/
+    env_file: "./apps/weather-service/.env"
+
+networks:
+  app-net:
+    driver: bridge
