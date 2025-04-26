@@ -1,4 +1,5 @@
 import { WeatherData } from "@/interfaces";
+import { env } from "next-runtime-env";
 
 export async function getWeatherInfo({
   address,
@@ -7,8 +8,9 @@ export async function getWeatherInfo({
   address?: string;
   IP: string;
 }) {
+  const gatewayEndpoint = env("NEXT_PUBLIC_GATEWAY_ENDPOINT");
   console.log("ip is " + IP + " address is " + address);
-  console.log(process.env.NEXT_PUBLIC_GATEWAY_ENDPOINT);
+  console.log(gatewayEndpoint);
 
   const mockReturnData: WeatherData = {
     mintemp_c: 10,
@@ -23,7 +25,7 @@ export async function getWeatherInfo({
   }
   if (!address) {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_GATEWAY_ENDPOINT}/location?ip_address=${IP}`
+      `${gatewayEndpoint}/location?ip_address=${IP}`,
     );
     if (!response) {
       throw new Error("Failed to fetch weather data");
@@ -31,13 +33,13 @@ export async function getWeatherInfo({
     return response.json();
   } else {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_GATEWAY_ENDPOINT}/location?address=${address}`,
+      `${gatewayEndpoint}/location?address=${address}`,
       {
         method: "GET", // Ensure this matches the method you're using in the browser
         headers: {
           "Content-Type": "application/json", // Include any necessary headers
         },
-      }
+      },
     );
 
     if (!response) {

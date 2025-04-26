@@ -4,6 +4,7 @@ import "./globals.css";
 import TopMenu from "@/components/topMenu";
 import Bg from "@/components/bg";
 import Image from "next/image";
+import { PublicEnvScript } from "next-runtime-env";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,6 +34,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <PublicEnvScript />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}
       >
